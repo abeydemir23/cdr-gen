@@ -1,5 +1,6 @@
 package com.cdr.gen;
 
+import com.cdr.gen.util.FuzzificationUtil;
 import com.cdr.gen.util.IOUtils;
 import com.cdr.gen.util.JavaUtils;
 import com.google.common.io.Files;
@@ -72,16 +73,14 @@ public final class CDRGen {
             
             for (Person p : customers) {
                 for (Call c : p.getCalls()) {
+                    FuzzifiedCall fuzzifiedCall = FuzzificationUtil.FuzzificateCall(c);
                     fw.append(c.getId() + ","
                             + p.getPhoneNumber() + ","
-                            + c.getLine() + ","
-                            + c.getDestPhoneNumber() + ","
-                            + c.getTime().getStart().toString(dateFormatter) + "," 
-                            + c.getTime().getEnd().toString(dateFormatter) + "," 
-                            + c.getTime().getStart().toString(timeFormatter) + "," 
-                            + c.getTime().getEnd().toString(timeFormatter) + ","
-                            + c.getType() + ","
-                            + c.getCost()
+                            + fuzzifiedCall.getDestPhoneNumber() + ","
+                            + fuzzifiedCall.getDuration() + "," 
+                            + fuzzifiedCall.getType() + ","
+                            + fuzzifiedCall.getCost() + ","
+                            + fuzzifiedCall.getFraud()
                             + newLine);
                 }
             }
